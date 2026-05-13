@@ -140,7 +140,7 @@ for e in data.get('entries', []):
         'id': vid_id,
         'title': title,
         'keywords': build_keywords(title),
-        'thumbnail': f"https://i.ytimg.com/vi/{vid_id}/mqdefault.jpg",
+        'thumbnail': f"https://i.ytimg.com/vi/{vid_id}/hqdefault.jpg",
         'duration': e.get('duration'),
     })
 
