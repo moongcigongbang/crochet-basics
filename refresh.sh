@@ -26,6 +26,8 @@ PIN_TO_BOTTOM = [
 # 상품 소개 영상 ID — 메인 그리드에서 빠지고 하단 "뜨린이 추천 상품" 코너로 이동
 PRODUCT_IDS = [
     'kfg6TmAoDXM',  # 뜨개초보인데, 너무 헷갈려요
+    'L_a1kfHgkE8',  # When I see a beginner knitter, I want to help them...
+    'whWT8fWAmoQ',  # I just couldn't pass it up
 ]
 
 # 리스트에서 숨길 영상 ID (기초기법과 무관한 영상 등)
