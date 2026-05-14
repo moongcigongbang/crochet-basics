@@ -30,7 +30,7 @@ html, body {
   justify-content: center;
   gap: 6px 10px;
   padding: 11px 16px;
-  background: linear-gradient(90deg, #f47fa1 0%, #ff9f7e 25%, #f47fa1 50%, #ff9f7e 75%, #f47fa1 100%);
+  background: linear-gradient(90deg, #f47fa1 0%, #74c5e8 25%, #f47fa1 50%, #74c5e8 75%, #f47fa1 100%);
   background-size: 200% 100%;
   animation: promoFlow 14s linear infinite;
   color: #fff;
