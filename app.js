@@ -1,4 +1,20 @@
 (() => {
+  // 바니트 한정 판매 배너 — 2026-05-27 KST 자정 이후 자동 숨김
+  const promoBanner = document.getElementById('promo-banner');
+  if (promoBanner) {
+    // KST 캘린더 날짜 기준으로 일수 계산 (시간대 무관)
+    const KST_OFFSET = 9 * 3600000;
+    const nowKst = new Date(Date.now() + KST_OFFSET);
+    const todayUtc = Date.UTC(nowKst.getUTCFullYear(), nowKst.getUTCMonth(), nowKst.getUTCDate());
+    const endUtc = Date.UTC(2026, 4, 27); // 5월 27일
+    const daysLeft = (endUtc - todayUtc) / 86400000;
+    if (daysLeft >= 0) {
+      const ddayEl = document.getElementById('promo-dday');
+      if (ddayEl) ddayEl.textContent = `D-${daysLeft}`;
+      promoBanner.hidden = false;
+    }
+  }
+
   const grid = document.getElementById('grid');
   const productsSection = document.getElementById('products-section');
   const productsGrid = document.getElementById('products-grid');
