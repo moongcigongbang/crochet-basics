@@ -15,6 +15,37 @@
     }
   }
 
+  // 공유 버튼 — 모바일은 Web Share API, 데스크탑은 클립보드 복사
+  const SHARE_URL = 'https://moongcigongbang.github.io/crochet-basics/';
+  const toast = document.getElementById('toast');
+  const showToast = (msg) => {
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => toast.classList.remove('show'), 1800);
+  };
+  const shareBtn = document.getElementById('share-btn');
+  if (shareBtn) {
+    shareBtn.addEventListener('click', async () => {
+      const data = {
+        title: '코바늘 기초기법',
+        text: '뭉치공방 코바늘 기초기법 영상 모음',
+        url: SHARE_URL,
+      };
+      if (navigator.share) {
+        try { await navigator.share(data); } catch {}
+        return;
+      }
+      try {
+        await navigator.clipboard.writeText(SHARE_URL);
+        showToast('링크가 복사됐어요');
+      } catch {
+        showToast('복사 실패 — 직접 주소를 복사해주세요');
+      }
+    });
+  }
+
   const grid = document.getElementById('grid');
   const productsSection = document.getElementById('products-section');
   const productsGrid = document.getElementById('products-grid');
