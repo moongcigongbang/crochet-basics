@@ -18,13 +18,48 @@
   // 공유 버튼 — 모바일은 Web Share API, 데스크탑은 클립보드 복사
   const SHARE_URL = 'https://moongcigongbang.github.io/crochet-basics/';
   const toast = document.getElementById('toast');
-  const showToast = (msg) => {
+  const showToast = (msg, long = false) => {
     if (!toast) return;
     toast.textContent = msg;
+    toast.classList.toggle('long', long);
     toast.classList.add('show');
     clearTimeout(showToast._t);
-    showToast._t = setTimeout(() => toast.classList.remove('show'), 1800);
+    showToast._t = setTimeout(() => toast.classList.remove('show'), long ? 4500 : 1800);
   };
+  // 홈 화면 추가 — Android는 beforeinstallprompt, iOS는 안내 토스트
+  const installBtn = document.getElementById('install-btn');
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+    || window.navigator.standalone === true;
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  let deferredPrompt = null;
+
+  // 이미 PWA로 설치돼 실행 중인 경우만 버튼 숨김
+  if (installBtn && isStandalone) installBtn.hidden = true;
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+  });
+  window.addEventListener('appinstalled', () => {
+    if (installBtn) installBtn.hidden = true;
+    deferredPrompt = null;
+  });
+
+  if (installBtn) {
+    installBtn.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        try { await deferredPrompt.userChoice; } catch {}
+        deferredPrompt = null;
+        installBtn.hidden = true;
+      } else if (isIOS) {
+        showToast('하단 공유 버튼 → "홈 화면에 추가"', true);
+      } else {
+        showToast('브라우저 메뉴에서 "앱 설치" 또는 "홈 화면에 추가"를 선택하세요', true);
+      }
+    });
+  }
+
   const shareBtn = document.getElementById('share-btn');
   if (shareBtn) {
     shareBtn.addEventListener('click', async () => {
@@ -110,10 +145,45 @@
     </article>
   `;
 
+  const CATEGORY_ORDER = [
+    '기초 뜨개법',
+    '코 늘리기',
+    '코 줄이기',
+    '변형 뜨개법',
+    '코드 & 매듭',
+    '심화·마무리 팁',
+  ];
+
   const render = () => {
     const q = query.trim();
     const filtered = videos.filter((v) => matches(v, q));
-    grid.innerHTML = filtered.map((v) => renderCard(v, q)).join('');
+
+    // 카테고리별 그룹핑
+    const groups = new Map();
+    for (const v of filtered) {
+      const cat = v.category || '기타';
+      if (!groups.has(cat)) groups.set(cat, []);
+      groups.get(cat).push(v);
+    }
+
+    // CATEGORY_ORDER 순서로 섹션 렌더
+    const knownCats = new Set(CATEGORY_ORDER);
+    const extraCats = [...groups.keys()].filter((c) => !knownCats.has(c));
+    const orderedCats = [...CATEGORY_ORDER, ...extraCats];
+
+    const sections = [];
+    for (const cat of orderedCats) {
+      const list = groups.get(cat);
+      if (!list || !list.length) continue;
+      sections.push(`
+        <section class="cat-section">
+          <h2 class="cat-header">${escapeHtml(cat)}<span class="cat-count">${list.length}</span></h2>
+          <div class="cat-grid">${list.map((v) => renderCard(v, q)).join('')}</div>
+        </section>
+      `);
+    }
+    grid.innerHTML = sections.join('');
+
     emptyEl.hidden = filtered.length !== 0;
     countEl.textContent = q
       ? `${filtered.length}개 결과 (전체 ${videos.length})`

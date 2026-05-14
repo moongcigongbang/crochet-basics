@@ -136,6 +136,21 @@ html, body {
 }
 .link-share:active { transform: scale(0.97); }
 
+.link-install {
+  background: #6c5ce7;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+.link-install:active { transform: scale(0.97); }
+
+.toast.long {
+  max-width: 280px;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.45;
+}
+
 .toast {
   position: fixed;
   bottom: 24px;
@@ -233,10 +248,33 @@ main {
   margin: 0 auto;
 }
 
-.grid {
+.grid, .cat-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
   gap: 14px;
+}
+
+.cat-section {
+  margin-bottom: 32px;
+}
+.cat-section:first-child { margin-top: 4px; }
+
+.cat-header {
+  margin: 0 4px 14px;
+  padding-bottom: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent-soft);
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  letter-spacing: -0.01em;
+}
+.cat-count {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
 }
 
 .card {

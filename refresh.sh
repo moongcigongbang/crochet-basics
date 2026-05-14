@@ -118,6 +118,34 @@ def build_keywords(title):
             kws.add(f'{n}코줄이기')
     return sorted(kws)
 
+# 카테고리 분류 — 위에서 아래로 첫 번째 매칭되는 카테고리에 배정
+BASIC_TITLES = {
+    'magic ring', 'chain', 'slip stitch', 'single crochet',
+    'half double crochet', 'double crochet', 'treble crochet',
+    'double treble crochet', 'triple treble crochet',
+}
+VARIANT_KEYWORDS = ('bobble', 'puff', 'popcorn', 'picot', 'cross over',
+                    'loop stitch', 'twisted', 'reverse', 'y stitch',
+                    'inverted', 'knit-like')
+
+def categorize(title, vid_id, pin_bottom_set):
+    # PIN_TO_BOTTOM 영상은 무조건 심화/마무리 팁으로
+    if vid_id in pin_bottom_set:
+        return '심화·마무리 팁'
+    t = title.lower().strip()
+    if t in BASIC_TITLES:
+        return '기초 뜨개법'
+    if 'increase' in t:
+        return '코 늘리기'
+    if 'together' in t:
+        return '코 줄이기'
+    if 'cord' in t or 'knot' in t:
+        return '코드 & 매듭'
+    if ('loops only' in t or 'post ' in t or '걸어뜨기' in title
+            or any(k in t for k in VARIANT_KEYWORDS)):
+        return '변형 뜨개법'
+    return '심화·마무리 팁'  # fallback
+
 def is_unavailable(entry):
     title = (entry.get('title') or '').strip()
     avail = entry.get('availability')
@@ -157,6 +185,10 @@ top = [v for v in videos if v['id'] not in pinned_set]
 pinned_lookup = {v['id']: v for v in videos if v['id'] in pinned_set}
 bottom = [pinned_lookup[i] for i in PIN_TO_BOTTOM if i in pinned_lookup]
 videos = top + bottom
+
+# 카테고리 배정 (PIN_TO_BOTTOM 후처리 — 순서는 유지하되 라벨만 추가)
+for v in videos:
+    v['category'] = categorize(v['title'], v['id'], pinned_set)
 
 out = {
     'playlist_title': data.get('title'),
