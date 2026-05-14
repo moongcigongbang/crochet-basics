@@ -286,7 +286,7 @@
       videos = data.videos || [];
       products = data.products || [];
       titleEl.textContent = data.playlist_title || '코바늘 기초기법';
-      metaEl.textContent = `${data.channel || ''} · ${videos.length}개 영상`;
+      metaEl.textContent = `뭉치공방 · ${videos.length}개 영상`;
       render();
     })
     .catch((err) => {
