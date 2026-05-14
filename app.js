@@ -75,7 +75,8 @@
       if (isIOS) {
         showInstallGuide([
           `하단 ${SHARE_ICON_SVG} 탭`,
-          `인앱이면 "Safari로 열기" → 다시 ${SHARE_ICON_SVG} 탭`,
+          '"Safari로 열기" 선택',
+          `Safari에서 ${SHARE_ICON_SVG} 다시 탭`,
           '"홈 화면에 추가" 선택',
         ]);
       } else {
