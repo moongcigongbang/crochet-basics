@@ -28,6 +28,7 @@ PRODUCT_IDS = [
     'kfg6TmAoDXM',  # 뜨개초보인데, 너무 헷갈려요
     'L_a1kfHgkE8',  # When I see a beginner knitter, I want to help them...
     'whWT8fWAmoQ',  # I just couldn't pass it up
+    'hFJY1tM5hjs',  # Try using it when knitting.
 ]
 
 # 리스트에서 숨길 영상 ID (기초기법과 무관한 영상 등)
