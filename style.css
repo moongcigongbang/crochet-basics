@@ -30,7 +30,9 @@ html, body {
   justify-content: center;
   gap: 6px 10px;
   padding: 11px 16px;
-  background: linear-gradient(135deg, #f47fa1 0%, #ff9f7e 100%);
+  background: linear-gradient(90deg, #f47fa1 0%, #ff9f7e 25%, #f47fa1 50%, #ff9f7e 75%, #f47fa1 100%);
+  background-size: 200% 100%;
+  animation: promoFlow 14s linear infinite;
   color: #fff;
   text-decoration: none;
   font-size: 13.5px;
@@ -38,6 +40,13 @@ html, body {
   letter-spacing: -0.01em;
   text-align: center;
   transition: opacity 0.15s;
+}
+@keyframes promoFlow {
+  from { background-position: 0% 50%; }
+  to   { background-position: -100% 50%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .promo-banner { animation: none; }
 }
 .promo-banner:hover { opacity: 0.92; }
 .promo-banner[hidden] { display: none; }
