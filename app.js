@@ -31,6 +31,8 @@
   const isStandalone = window.matchMedia('(display-mode: standalone)').matches
     || window.navigator.standalone === true;
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  // iOS 인앱 브라우저 (인스타/카톡/네이버/페북/라인) — Safari 외부에서는 "홈 화면 추가" 불가
+  const isIOSWebview = isIOS && /Instagram|KAKAOTALK|NAVER|FBAN|FBAV|Line/i.test(navigator.userAgent);
   let deferredPrompt = null;
 
   // 이미 PWA로 설치돼 실행 중인 경우만 버튼 숨김
@@ -52,6 +54,8 @@
         try { await deferredPrompt.userChoice; } catch {}
         deferredPrompt = null;
         installBtn.hidden = true;
+      } else if (isIOSWebview) {
+        showToast('우측 상단 메뉴 → "Safari로 열기" → 공유 → "홈 화면에 추가"', true);
       } else if (isIOS) {
         showToast('하단 공유 버튼 → "홈 화면에 추가"', true);
       } else {
