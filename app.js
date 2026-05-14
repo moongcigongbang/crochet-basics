@@ -47,6 +47,22 @@
     deferredPrompt = null;
   });
 
+  // iOS 안내용 아이콘 (공유 아이콘 = 사각형 + 위쪽 화살표)
+  const SHARE_ICON_SVG = '<svg class="step-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-label="공유"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>';
+
+  const installGuide = document.getElementById('install-guide');
+  const installGuideSteps = document.getElementById('install-guide-steps');
+  const installGuideClose = document.getElementById('install-guide-close');
+  const showInstallGuide = (steps) => {
+    if (!installGuide) return;
+    installGuideSteps.innerHTML = steps.map((s) => `<li>${s}</li>`).join('');
+    installGuide.hidden = false;
+  };
+  const hideInstallGuide = () => {
+    if (installGuide) installGuide.hidden = true;
+  };
+  if (installGuideClose) installGuideClose.addEventListener('click', hideInstallGuide);
+
   if (installBtn) {
     installBtn.addEventListener('click', async () => {
       if (deferredPrompt) {
@@ -54,12 +70,25 @@
         try { await deferredPrompt.userChoice; } catch {}
         deferredPrompt = null;
         installBtn.hidden = true;
-      } else if (isIOSWebview) {
-        showToast('우측 상단 메뉴 → "Safari로 열기" → 공유 → "홈 화면에 추가"', true);
+        return;
+      }
+      if (isIOSWebview) {
+        showInstallGuide([
+          `하단 ${SHARE_ICON_SVG} 탭`,
+          '"Safari로 열기" 선택',
+          `Safari에서 ${SHARE_ICON_SVG} 다시 탭`,
+          '"홈 화면에 추가" 선택',
+        ]);
       } else if (isIOS) {
-        showToast('하단 공유 버튼 → "홈 화면에 추가"', true);
+        showInstallGuide([
+          `하단 ${SHARE_ICON_SVG} 탭`,
+          '"홈 화면에 추가" 선택',
+        ]);
       } else {
-        showToast('브라우저 메뉴에서 "앱 설치" 또는 "홈 화면에 추가"를 선택하세요', true);
+        showInstallGuide([
+          '브라우저 메뉴 열기',
+          '"앱 설치" 또는 "홈 화면에 추가" 선택',
+        ]);
       }
     });
   }
