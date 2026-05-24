@@ -110,6 +110,7 @@
   }
 
   const grid = document.getElementById('grid');
+  const subscribeSection = document.getElementById('subscribe-section');
   const productsSection = document.getElementById('products-section');
   const productsGrid = document.getElementById('products-grid');
   const search = document.getElementById('search');
@@ -217,6 +218,9 @@
       ? `${filtered.length}개 결과 (전체 ${videos.length})`
       : `전체 ${videos.length}개 영상`;
     clearBtn.hidden = !q;
+
+    // 구독 CTA: 검색 중이 아닐 때만 노출
+    if (subscribeSection) subscribeSection.hidden = !!q;
 
     // 상품 코너: 검색 중이 아닐 때만 노출
     if (!q && products.length) {

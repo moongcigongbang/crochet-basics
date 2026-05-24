@@ -496,6 +496,66 @@ mark {
 }
 .yt-link:hover { text-decoration: underline; }
 
+.subscribe-section {
+  margin: 4px 0 20px;
+}
+.subscribe-section[hidden] { display: none; }
+
+.subscribe-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  background: linear-gradient(135deg, #fff 0%, var(--accent-soft) 100%);
+  border: 1px solid var(--accent-soft);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.subscribe-text { flex: 1; min-width: 0; }
+
+.subscribe-title {
+  margin: 0 0 4px;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.subscribe-desc {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--muted);
+  word-break: keep-all;
+}
+
+.subscribe-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 16px;
+  background: #ff0000;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 999px;
+  font-size: 13.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: transform 0.1s, opacity 0.15s;
+}
+.subscribe-btn:hover { opacity: 0.92; }
+.subscribe-btn:active { transform: scale(0.97); }
+
+@media (max-width: 480px) {
+  .subscribe-card { gap: 10px; padding: 14px; }
+  .subscribe-title { font-size: 13.5px; }
+  .subscribe-desc { font-size: 12px; }
+  .subscribe-btn { padding: 9px 13px; font-size: 12.5px; }
+  .subscribe-btn span { display: inline; }
+}
+
 .products-section {
   margin-top: 48px;
   padding-top: 32px;
